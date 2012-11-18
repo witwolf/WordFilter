@@ -17,6 +17,7 @@
  */
 
 #include "WordFilter.h"
+#include "Utils.h"
 using namespace std;
 
 void WordFilter::initFilterWithWords(const vector<string> & words)
@@ -27,12 +28,13 @@ void WordFilter::initFilterWithWords(const vector<string> & words)
 string WordFilter::applyFilter(const string &src)
 {
     string ret = src;
+    State * curState = m_fsm.begin();
     for(int i=0;i<ret.length();)
 	{
-	    m_fsm.nextState(ret[i]);
-	    if(m_fsm.isEnd())
+	    curState = m_fsm.nextState(curState,toLowercase(ret[i]));
+	    if(m_fsm.isEnd(curState))
 		{
-		    int len = m_fsm.getMatch().length();
+		    int len = m_fsm.getMatch(curState).length();
 		    ret.replace(i-len+1,len,len,'*');
 		}
 	    i++;

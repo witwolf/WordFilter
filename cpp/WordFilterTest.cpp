@@ -30,7 +30,7 @@ int main()
 	    ,"abc"
 	    ,"you"
 	};
-    string src = "aac fuck you ababc haha aaababd" ;
+    string src = "aac fuck You ababc haha aaababd" ;
     vector<string> words;
     for(int i = 0 ; i < sizeof(_words)/sizeof(char*) ;i++)
 	{

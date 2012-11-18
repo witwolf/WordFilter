@@ -29,9 +29,10 @@ class FSM
     FSM();
     ~FSM();
     void init(const vector<string>& words);
-    void nextState(char input);
-    bool isEnd();
-    const string & getMatch();
+    State* nextState(State *curState,char input);
+    State * begin();
+    bool isEnd(State * curState);
+    const string & getMatch(State *curState);
     
  private:
     State * insertState(State * state,char input);
@@ -39,7 +40,6 @@ class FSM
 
  private:
     State * m_start;
-    State * m_curState;
 };
 
 class State

@@ -9,12 +9,10 @@ import java.util.LinkedList;
 public class FSM {
 
 	private State start ;
-	private State curState;
 
 	public FSM()
 	{
 		start = new State(null,null ) ;
-		curState = start;
 	}
 
 	public void init(List<String>  words)
@@ -44,31 +42,33 @@ public class FSM {
 		}	
 	}
 
-	public void nextState(char input)
+	public State begin()
+	{
+		return start;
+	}
+	public State nextState(State curState,char input)
 	{
 		Integer key = Integer.valueOf(input);
 		if(curState.nexts.containsKey(key))
 		{
-			curState = curState.nexts.get(key);
-			return;
+			return curState.nexts.get(key);
 		}
 		else if(curState == start)
 		{
-			return;
+			return curState;
 		}
 		else
 		{
-			curState = curState.failureState;
-			nextState(input);
+			return nextState(curState.failureState,input);
 		}		
 	}
 	
-	public boolean isEnd()
+	public boolean isEnd(State curState)
 	{
 		return curState.isEnd;
 	}
 	
-	public String getMatch()
+	public String getMatch(State curState)
 	{
 		return curState.match;
 	}

@@ -22,7 +22,7 @@ public class WordFilterTest {
 		wordFilter.initFilterWithWords(words);
 		
 		String src = "ababc Fuck yo";
-		String ret = wordFilter.AfterFilter(src);
+		String ret = wordFilter.applyFilter(src);
 		
 		System.out.println("before filter : " + src);
 		System.out.println("after filter : " + ret);

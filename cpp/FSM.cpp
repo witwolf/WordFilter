@@ -17,12 +17,12 @@
  */
 
 #include "FSM.h"
+#include "Utils.h"
 #include <queue>
 using namespace std;
 FSM::FSM()
 {
     m_start = new State(NULL,0);
-    m_curState = m_start;
 }
 FSM::~FSM()
 {
@@ -37,7 +37,7 @@ void FSM::init(const vector<string> &words)
 	    state = m_start;
 	    for(int i=0;i<iter->length();i++)
 		{
-		    state = insertState(state,(*iter)[i]);
+		    state = insertState(state,toLowercase((*iter)[i]));
 		}
 	    state->m_isEnd = true;
 	    state->m_match = *iter;
@@ -59,32 +59,33 @@ void FSM::init(const vector<string> &words)
 	}
 	    
 }
-void FSM::nextState(char input)
+State* FSM::nextState(State * curState,char input)
 {
-    if(m_curState->m_nexts.count(input))
+    if(curState->m_nexts.count(input))
 	{
-	    m_curState =  m_curState->m_nexts.find(input)->second;
-	    return ;
+	    return curState->m_nexts.find(input)->second;
 	}
-    else if(m_curState == m_start)
+    else if(curState == m_start)
 	{
-	    return;
+	    return curState;
 	}
     else
 	{
-	    m_curState = m_curState->m_failureState;
-	    nextState(input);
+	    return nextState(curState->m_failureState,input);
 	}
 }
-
-bool FSM::isEnd()
+State * FSM::begin()
 {
-    return m_curState->m_isEnd;
+    return m_start;
+}
+bool FSM::isEnd(State * curState)
+{
+    return curState->m_isEnd;
 }
 
-const string & FSM::getMatch()
+const string & FSM::getMatch(State * curState)
 {
-    return m_curState->m_match;
+    return curState->m_match;
 }
 
 State * FSM::insertState(State *state,char input)
@@ -112,13 +113,9 @@ void FSM::initFailure(State * state)
 	    state->m_failureState = state->m_prev->m_failureState->m_nexts.find(state->m_input)->second;
 	    return;
 	}
-       else
-	   state->m_failureState = m_start;
+    else
+	state->m_failureState = m_start;
 }
-
-/**************
- *****State****
- **************/
 
 State::State(State* prev,char input)
     :m_prev(prev)

@@ -1,0 +1,4 @@
+WordFilter is an efficient program to filter out all keywords in a paragraph.
+The core in this project is FSM (finite state machine),keywords matching & state transfering is done with it.
+
+And there are two different implenmentation using java & c++.

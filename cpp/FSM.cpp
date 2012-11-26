@@ -78,15 +78,6 @@ State * FSM::begin()
 {
     return m_start;
 }
-bool FSM::isEnd(State * curState)
-{
-    return curState->m_isEnd;
-}
-
-const string & FSM::getMatch(State * curState)
-{
-    return curState->m_match;
-}
 
 State * FSM::insertState(State *state,char input)
 {

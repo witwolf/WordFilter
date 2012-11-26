@@ -22,25 +22,6 @@
 #include <vector>
 #include <string>
 using namespace std;
-class State;
-class FSM
-{
- public:
-    FSM();
-    ~FSM();
-    void init(const vector<string>& words);
-    State* nextState(State *curState,char input);
-    State * begin();
-    bool isEnd(State * curState);
-    const string & getMatch(State *curState);
-    
- private:
-    State * insertState(State * state,char input);
-    void initFailure(State * state);
-
- private:
-    State * m_start;
-};
 
 class State
 {
@@ -56,6 +37,26 @@ class State
     bool m_isEnd;
     string m_match;
 };
+
+class FSM
+{
+ public:
+    FSM();
+    ~FSM();
+    void init(const vector<string>& words);
+    State* nextState(State *curState,char input);
+    State * begin();
+    inline bool isEnd(State * curState){return curState->m_isEnd;}
+    inline const string & getMatch(State *curState){return curState->m_match;}
+    
+ private:
+    State * insertState(State * state,char input);
+    void initFailure(State * state);
+
+ private:
+    State * m_start;
+};
+
 
 #endif
 
